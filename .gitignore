@@ -1,7 +1,25 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Environment variables
+.env
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+*.tgz
+
 # Build
 dist/
 build/
-coverage/
 
 # Miscellaneous
 .DS_Store
@@ -10,4 +28,3 @@ Thumbs.db
 # IDEs
 .idea/
 .vsc/
-*.xml
