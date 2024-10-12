@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContext';
@@ -19,17 +19,7 @@ function SignUp() {
   const [chatting, setChatting] = useState('');
   const [locationOn, setLocationOn] = useState(false);
   const [currentLabel, setCurrentLabel] = useState(Status.chill);
-  useCallback(() => {
-    if (user) {
-      console.log(user);
-      setUsername(user.username);
-      setProfessional(user.labels.professional);
-      setDating(user.labels.dating);
-      setChatting(user.labels.chatting);
-      setLocationOn(user.isLocationOn);
-      setCurrentLabel(user.currentLabel);
-    }
-  }, [user]);
+
   const handleSignUp = async () => {
     try {
       const data = {
@@ -56,10 +46,14 @@ function SignUp() {
   return (
     <div className="container">
       <div className="form">
-        <h1 className="title">Create Your Profile</h1>
+        {user ? (
+          <h1 className="title">Welcome, {user.username}</h1>
+        ) : (
+          <h1 className="title">Create Your Profile</h1>
+        )}
 
         {/* Set Username */}
-        {!user ? (
+        {!user && (
           <input
             type="text"
             value={username}
@@ -67,54 +61,66 @@ function SignUp() {
             placeholder="Enter your username"
             className="input"
           />
-        ) : (
-          <p className="mb-4 text-center text-gray-600">
-            Welcome, {user.username}
-          </p>
         )}
 
         {/* Choose Chatting Label */}
         <h2 className="label">Chatting Label</h2>
-        <input
-          type="text"
-          value={chatting}
-          onChange={(e) => setChatting(e.target.value)}
-          placeholder="Enter your chatting label"
-          className="input"
-        />
+        {!user ? (
+          <input
+            type="text"
+            value={chatting}
+            onChange={(e) => setChatting(e.target.value)}
+            placeholder="Enter your chatting label"
+            className="input"
+          />
+        ) : (
+          <p className="mb-4 text-center text-gray-600">{user.chatting}</p>
+        )}
 
         {/* Choose Professional Label */}
         <h2 className="label">Professional Label</h2>
-        <input
-          type="text"
-          value={professional}
-          onChange={(e) => setProfessional(e.target.value)}
-          placeholder="Enter your professional label"
-          className="input"
-        />
+        {!user ? (
+          <input
+            type="text"
+            value={professional}
+            onChange={(e) => setProfessional(e.target.value)}
+            placeholder="Enter your professional label"
+            className="input"
+          />
+        ) : (
+          <p className="mb-4 text-center text-gray-600">{user.professional}</p>
+        )}
 
         {/* Choose Dating Label */}
         <h2 className="label">Dating Label</h2>
-        <input
-          type="text"
-          value={dating}
-          onChange={(e) => setDating(e.target.value)}
-          placeholder="Enter your dating label"
-          className="input"
-        />
+        {!user ? (
+          <input
+            type="text"
+            value={dating}
+            onChange={(e) => setDating(e.target.value)}
+            placeholder="Enter your dating label"
+            className="input"
+          />
+        ) : (
+          <p className="mb-4 text-center text-gray-600">{user.dating}</p>
+        )}
 
         {/* Choose Label to Currently Display */}
         <h2 className="label">What are you looking for?</h2>
-        <select
-          id="labels"
-          onChange={setSelectedLabel}
-          value={currentLabel}
-          className="select"
-        >
-          <option value="chatting">Chatting</option>
-          <option value="professional">Professional</option>
-          <option value="dating">Dating</option>
-        </select>
+        {!user ? (
+          <select
+            id="labels"
+            onChange={setSelectedLabel}
+            value={currentLabel}
+            className="select"
+          >
+            <option value="chatting">Chatting</option>
+            <option value="professional">Professional</option>
+            <option value="dating">Dating</option>
+          </select>
+        ) : (
+          <p className="mb-4 text-center text-gray-600">{user.currentLabel}</p>
+        )}
 
         {/* Location Visibility Toggle */}
         <h2 className="label">Change Location Visibility</h2>
@@ -122,16 +128,22 @@ function SignUp() {
           <span className="mr-3 text-gray-600">Location is on</span>
           <input
             type="checkbox"
-            checked={locationOn}
+            checked={user ? user.locationOn : locationOn}
             onChange={() => setLocationOn(!locationOn)}
             className="toggle"
           />
         </label>
 
         {/* Submit Button */}
-        <button onClick={handleSignUp} className="submit-button">
-          Submit
-        </button>
+        {!user && (
+          <button
+            onClick={handleSignUp}
+            className="submit-button"
+            type="button"
+          >
+            Submit
+          </button>
+        )}
 
         {error && <p className="error">{error}</p>}
       </div>
