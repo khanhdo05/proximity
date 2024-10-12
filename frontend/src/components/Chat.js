@@ -21,13 +21,9 @@ const Chat = () => {
       console.error('WebSocket error:', error);
     };
 
-    // TODO: Close the connection
-    // socket.onclose(() => {
-    //   console.log('Client disconnected');
-    // });
-
     return () => {
       socket.close();
+      console.log('Disconnect client');
     };
   }, []);
 
