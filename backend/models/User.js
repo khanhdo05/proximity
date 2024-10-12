@@ -28,10 +28,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    nearbyList: {
-      type: [String],
-      required: false,
-    },
     isLocationOn: {
       type: Boolean,
       required: true,
