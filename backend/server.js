@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const connectDB = require("./connect");
+const connectDB = require("./config/connect");
 const { Schema, model } = require("mongoose");
 
 const app = express();
