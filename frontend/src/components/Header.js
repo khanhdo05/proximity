@@ -14,7 +14,7 @@ const Header = () => {
           </li>
           <li className="nav-item">
             <Link to="/" className="nav-link">
-              Bio
+              Profile
             </Link>
           </li>
         </ul>
