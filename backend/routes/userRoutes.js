@@ -90,5 +90,24 @@ router.post('/getNearbyUsers', async (req, res) => {
     // }
 });
 
-router.post()
+router.post('/getNearbyRequests', async (req, res) => {
+  let data = req.body;
+  let uid = data.uid;
+  let long = data.longitude;
+  let lat = data.latitude;
+  let labelSelector = data.labelSelector;
+  let timestamp = data.timestamp;
+  console.log('got data ' + JSON.stringify(data));
+  User.find({"activeOutboundRequests" : $in[uid]}).where('location.x')
+    .gt(lat - distThresholdR)
+    .lt(lat + distThresholdR)
+    .where('location.y')
+    .gt(long - distThresholdR)
+    .lt(long + distThresholdR)
+    .where('location.lastUpdated')
+    .gt(timestamp - showUserDelaySec * 1000)
+    .where('currentLabel').equals(labelSelector)
+    .select(`_id labels.${labelSelector}`)
+    .then((a) => {let b = a.map(o=> [o._id, o.labels[labelSelector]]); res.send(b)});
+}) 
 module.exports = router;
