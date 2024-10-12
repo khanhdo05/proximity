@@ -1,0 +1,13 @@
+# Build
+dist/
+build/
+coverage/
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+.vsc/
+*.xml
