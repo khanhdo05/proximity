@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import MapComponent from './UserLocationMap'; 
 
 function Home() {
   const navigate = useNavigate();
@@ -13,8 +14,7 @@ function Home() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h1 className="text-3xl font-bold">Home Page</h1>
-      <p>Welcome to the Home Page!</p>
+      <MapComponent />
     </div>
   );
 }
