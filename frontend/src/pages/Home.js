@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import MapComponent from './UserLocationMap'; 
+import MapComponent from '../components/UserLocationMap';
 
 function Home() {
   const navigate = useNavigate();
