@@ -36,6 +36,7 @@ const Chat = () => {
     }
   };
 
+  // TODO: no button to open
   return (
     <div>
       <button onClick={() => setIsModalOpen(true)}>Open Chat</button>
