@@ -5,7 +5,7 @@ import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import GeoService from './util/GeoService';
 import Header from './components/Header';
-import ReceivedRequests from './components/ReceivedRequests';
+import ReceivedRequests from './pages/ReceivedRequests';
 
 function App() {
   return (
