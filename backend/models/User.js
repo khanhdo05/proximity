@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema(
       required: false,
     },
     activeOutboundRequests : {
-      type: Array[String],
+      type: [String],
       required: false
     },
     currentConnectedUserId: {
