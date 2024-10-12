@@ -14,17 +14,22 @@ const MapComponent = () => {
       id: 1,
       affiliation: 'Uber',
       interests: 'Music',
-      actionType: 'Meetup',
-      distance: '0.5 miles away',
-      time: '3:06 PM',
+      age: '20-25',
+      pronouns: 'he/him',
     },
     {
       id: 2,
       affiliation: 'MIT',
       interests: 'CS and funny websites',
-      actionType: 'Message',
-      distance: '0.7 miles away',
-      time: '3:04 PM',
+      age: '25-30',
+      pronouns: 'she/her',
+    },
+    {
+      id: 3,
+      affiliation: 'Grinnell College',
+      interests: 'Philosphy and English',
+      age: '15-20',
+      pronouns: 'they/them',
     },
   ]);
   const radiusInMeters = 1609.34; // 1 mile in meters
@@ -110,14 +115,13 @@ const MapComponent = () => {
     <div className="map-component">
       <div ref={mapContainerRef} className="map-container" />
       <div className="people-list">
-        <h2>Choose a person</h2>
-        <h3>Recommended</h3>
+        <h3>Choose a person</h3>
         {nearbyPeople.map((person) => (
           <div key={person.id} className="person-card">
             <div className="person-info">
               <h4>1 Person from {person.affiliation}</h4>
               <p className="details">
-                {person.distance} • {person.time}
+                {person.pronouns} • {person.age}
               </p>
               <p>Interested in {person.interests}</p>
             </div>
@@ -125,7 +129,7 @@ const MapComponent = () => {
               onClick={() => handleAction(person)}
               className="action-button"
             >
-              {person.actionType}
+              Request Meetup
             </button>
           </div>
         ))}
