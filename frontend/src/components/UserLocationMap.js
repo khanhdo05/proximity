@@ -1,22 +1,38 @@
-import React, { useEffect, useRef, useState } from "react";
-import mapboxgl from "mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
-import axios from "axios"; // Import axios for making API calls
+import React, { useEffect, useRef, useState } from 'react';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import '../styles/UserLocationMap.css';
 
 mapboxgl.accessToken =
-  "pk.eyJ1IjoiYWRhcnNoLXNoYXJtYTYyMTgiLCJhIjoiY2t2bHA5bDZuMDMzNjJ3cjJjYzNuNG1ieCJ9.QdNHT48FzKYo-MW9BsMUDA"; // Replace with your Mapbox token
+  'pk.eyJ1IjoiYWRhcnNoLXNoYXJtYTYyMTgiLCJhIjoiY2t2bHA5bDZuMDMzNjJ3cjJjYzNuNG1ieCJ9.QdNHT48FzKYo-MW9BsMUDA';
 
 const MapComponent = () => {
   const mapContainerRef = useRef(null);
   const [map, setMap] = useState(null);
-  const [people, setPeople] = useState([]); // State for storing fetched data
+  const [nearbyPeople, setNearbyPeople] = useState([
+    {
+      id: 1,
+      affiliation: 'Uber',
+      interests: 'Music',
+      actionType: 'Meetup',
+      distance: '0.5 miles away',
+      time: '3:06 PM',
+    },
+    {
+      id: 2,
+      affiliation: 'MIT',
+      interests: 'CS and funny websites',
+      actionType: 'Message',
+      distance: '0.7 miles away',
+      time: '3:04 PM',
+    },
+  ]);
   const radiusInMeters = 1609.34; // 1 mile in meters
 
   useEffect(() => {
-    // Initialize the Mapbox map
     const mapInstance = new mapboxgl.Map({
       container: mapContainerRef.current,
-      style: "mapbox://styles/mapbox/streets-v12",
+      style: 'mapbox://styles/mapbox/streets-v12',
       center: [-74.5, 40],
       zoom: 12,
     });
@@ -36,37 +52,36 @@ const MapComponent = () => {
           map.setCenter([longitude, latitude]);
 
           const circleFeature = {
-            type: "Feature",
+            type: 'Feature',
             geometry: {
-              type: "Polygon",
+              type: 'Polygon',
               coordinates: [
                 getCircleCoordinates([longitude, latitude], radiusInMeters),
               ],
             },
           };
 
-          map.addSource("circle", {
-            type: "geojson",
+          map.addSource('circle', {
+            type: 'geojson',
             data: circleFeature,
           });
 
           map.addLayer({
-            id: "circle-radius",
-            type: "fill",
-            source: "circle",
+            id: 'circle-radius',
+            type: 'fill',
+            source: 'circle',
             paint: {
-              "fill-color": "#007cbf",
-              "fill-opacity": 0.3,
+              'fill-color': '#007cbf',
+              'fill-opacity': 0.3,
             },
           });
         },
         (error) => {
-          console.error("Error fetching user location:", error);
+          console.error('Error fetching user location:', error);
         }
       );
     }
   }, [map]);
-
 
   const getCircleCoordinates = (center, radiusInMeters) => {
     const points = 64;
@@ -84,32 +99,34 @@ const MapComponent = () => {
     return coords;
   };
 
-  const handleRowClick = (person) => {
-    // Handle row click here
-    console.log("Clicked:", person);
+  const handleAction = (person) => {
+    console.log(
+      `${person.actionType} clicked for person from ${person.affiliation}`
+    );
+    // Implement the action logic here
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
-      <div
-        ref={mapContainerRef}
-        style={{ width: "100%", height: "50%" }} // Map takes 50% height
-      />
-      <div style={{ height: "50%", overflowY: "auto" }}>
-        {" "}
-        {/* Scrollable section */}
-        {people.map((person) => (
-          <div
-            key={person.id} // Ensure each row has a unique key
-            onClick={() => handleRowClick(person)}
-            style={{
-              padding: "15px",
-              borderBottom: "1px solid #ccc",
-              cursor: "pointer",
-              backgroundColor: "#f9f9f9",
-            }}
-          >
-            {person.name} {/* Adjust to show the desired properties */}
+    <div className="map-component">
+      <div ref={mapContainerRef} className="map-container" />
+      <div className="people-list">
+        <h2>Choose a person</h2>
+        <h3>Recommended</h3>
+        {nearbyPeople.map((person) => (
+          <div key={person.id} className="person-card">
+            <div className="person-info">
+              <h4>1 Person from {person.affiliation}</h4>
+              <p className="details">
+                {person.distance} • {person.time}
+              </p>
+              <p>Interested in {person.interests}</p>
+            </div>
+            <button
+              onClick={() => handleAction(person)}
+              className="action-button"
+            >
+              {person.actionType}
+            </button>
           </div>
         ))}
       </div>

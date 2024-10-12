@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContext';
+import '../styles/signup.css'; // Import the CSS file
 
 function SignUp() {
   const Status = {
@@ -43,79 +44,87 @@ function SignUp() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h1 className="text-3xl font-bold mb-4">Profile</h1>
-      {/* set username*/}
-      {!user ? (
+    <div className="container">
+      <div className="form">
+        <h1 className="title">Create Your Profile</h1>
+
+        {/* Set Username */}
+        {!user ? (
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Enter your username"
+            className="input"
+          />
+        ) : (
+          <p className="mb-4 text-center text-gray-600">
+            Welcome, {user.username}
+          </p>
+        )}
+
+        {/* Choose Chatting Label */}
+        <h2 className="label">Chatting Label</h2>
         <input
           type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Enter your username"
-          className="mb-4 p-2 border border-gray-300 rounded"
+          value={chatting}
+          onChange={(e) => setChatting(e.target.value)}
+          placeholder="Enter your chatting label"
+          className="input"
         />
-      ) : (
-        user.username
-      )}
 
-      {/* set icon */}
+        {/* Choose Professional Label */}
+        <h2 className="label">Professional Label</h2>
+        <input
+          type="text"
+          value={professional}
+          onChange={(e) => setProfessional(e.target.value)}
+          placeholder="Enter your professional label"
+          className="input"
+        />
 
-      {/* set label strings */}
-      <h1 className="text-3xl font-bold mb-4">Choose Chatting Label</h1>
-      <input
-        type="text"
-        value={chatting}
-        onChange={(e) => setChatting(e.target.value)}
-        placeholder="Enter your chatting label"
-        className="mb-4 p-2 border border-gray-300 rounded"
-      />
+        {/* Choose Dating Label */}
+        <h2 className="label">Dating Label</h2>
+        <input
+          type="text"
+          value={dating}
+          onChange={(e) => setDating(e.target.value)}
+          placeholder="Enter your dating label"
+          className="input"
+        />
 
-      <h1 className="text-3xl font-bold mb-4">Choose Professional Label</h1>
-      <input
-        type="text"
-        value={professional}
-        onChange={(e) => setProfessional(e.target.value)}
-        placeholder="Enter your professional label"
-        className="mb-4 p-2 border border-gray-300 rounded"
-      />
+        {/* Choose Label to Currently Display */}
+        <h2 className="label">What are you looking for?</h2>
+        <select
+          id="labels"
+          onChange={setSelectedLabel}
+          value={currentLabel}
+          className="select"
+        >
+          <option value="chatting">Chatting</option>
+          <option value="professional">Professional</option>
+          <option value="dating">Dating</option>
+        </select>
 
-      <h1 className="text-3xl font-bold mb-4">Choose Dating Label</h1>
-      <input
-        type="text"
-        value={dating}
-        onChange={(e) => setDating(e.target.value)}
-        placeholder="Enter your dating label"
-        className="mb-4 p-2 border border-gray-300 rounded"
-      />
+        {/* Location Visibility Toggle */}
+        <h2 className="label">Change Location Visibility</h2>
+        <label className="flex items-center mb-4">
+          <span className="mr-3 text-gray-600">Location is on</span>
+          <input
+            type="checkbox"
+            checked={locationOn}
+            onChange={() => setLocationOn(!locationOn)}
+            className="toggle"
+          />
+        </label>
 
-      {/* choose label to currently display */}
-      <h1 className="text-3xl font-bold mb-4">
-        Choose Label to Currently Display
-      </h1>
-      <select id="labels" onChange={setSelectedLabel} default={currentLabel}>
-        <option value="chatting">Chatting</option>
-        <option value="professional">Professional</option>
-        <option value="dating">Dating</option>
-      </select>
+        {/* Submit Button */}
+        <button onClick={handleSignUp} className="submit-button">
+          Submit
+        </button>
 
-      {/* location on */}
-      <h1 className="text-3xl font-bold mb-4">Change Location Visibility</h1>
-      <label>Location is on</label>
-      <input
-        type="checkbox"
-        value={locationOn}
-        name="Location is on"
-        onChange={(e) => setLocationOn(e.target.value)}
-        className="mb-4 p-2 border border-gray-300 rounded"
-      />
-
-      <button
-        onClick={handleSignUp}
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-      >
-        Submit
-      </button>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
+        {error && <p className="error">{error}</p>}
+      </div>
     </div>
   );
 }
