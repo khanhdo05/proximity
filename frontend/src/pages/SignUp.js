@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from '../contexts/AuthContext';
@@ -19,7 +19,17 @@ function SignUp() {
   const [chatting, setChatting] = useState('');
   const [locationOn, setLocationOn] = useState(false);
   const [currentLabel, setCurrentLabel] = useState(Status.chill);
-
+  useCallback(() => {
+    if (user) {
+      console.log(user);
+      setUsername(user.username);
+      setProfessional(user.labels.professional);
+      setDating(user.labels.dating);
+      setChatting(user.labels.chatting);
+      setLocationOn(user.isLocationOn);
+      setCurrentLabel(user.currentLabel);
+    }
+  }, [user]);
   const handleSignUp = async () => {
     try {
       const data = {
