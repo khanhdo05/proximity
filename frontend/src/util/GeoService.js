@@ -9,12 +9,14 @@ function GeoService(username, label, setNearbyUsers) {
     useEffect(()=> {axios.post("/api/user/updateLabel", {"label" : label})}, [label]) //update label in db when label is updated on frontend
     useEffect(()=> {
         setInterval(async ()=>{
-            nearbyUsers = await axios.get("api/user/getNearbyUsers", )
-            setNearbyUsers(nearbyUsers.map(()=>0)) //todo
+            window.navigator.geolocation.getCurrentPosition(async (loc) => {
+                let nearbyUsers = await axios.post("api/user/getNearbyUsers", {"latitude" : loc.coords.latitude, "longitude":loc.coords.longitude}) //todo
+                setNearbyUsers(nearbyUsers.filter(t=> t[0] != username))
+            })
         }, updateNearbyDelaySec * 1000);
         setInterval(async () => {
             window.navigator.geolocation.getCurrentPosition((loc) => {
-                axios.post("/api/user/updateLoc", {"latitude" : loc.coords.latitude, "longitude": loc.coords.longitude, "timestamp" : loc.timestamp})
+                axios.post("/api/user/updateLoc", {"latitude" : loc.coords.latitude, "longitude": loc.coords.longitude, "timestamp" : loc.timestamp, "username" : username})
             })
         }, uploadLocationDelaySec * 1000)},
     [])
