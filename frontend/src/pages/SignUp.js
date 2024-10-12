@@ -21,7 +21,7 @@ function SignUp() {
   const handleSignUp = async () => {
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/user/signup',
+        'http://localhost:8080/api/user/signup',
         {
           username,
         }
@@ -40,7 +40,7 @@ function SignUp() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h1 className="text-3xl font-bold mb-4">Bio</h1>
+      <h1 className="text-3xl font-bold mb-4">Profile</h1>
       {/* set username*/}
       {!localStorage.getItem('currentUser') ? (
         <input

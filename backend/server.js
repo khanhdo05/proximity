@@ -5,7 +5,7 @@ const connectDB = require('./config/connect');
 const { Schema, model } = require('mongoose');
 
 const app = express();
-const port = 5000;
+const port = 8080;
 
 app.use(bodyParser.json());
 
@@ -22,6 +22,7 @@ app.use(
 app.options('*', cors());
 
 app.use(express.json());
+
 
 connectDB().then((r) => console.log(r));
 

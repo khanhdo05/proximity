@@ -38,6 +38,9 @@
   },
   "devDependencies": {
     "axios": "^1.7.7",
-    "tailwindcss": "^3.4.13"
+    "dotenv": "^16.4.5",
+    "tailwindcss": "^3.4.13",
+    "crypto": "^1.0.1",
+    "os": "^0.1.2"
   }
 }
