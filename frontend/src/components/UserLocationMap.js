@@ -45,7 +45,9 @@ const MapComponent = () => {
       zoom: 12,
     });
 
-    setMap(mapInstance);
+    mapInstance.on('load', () => {
+      setMap(mapInstance);
+    });
 
     return () => mapInstance.remove();
   }, []);
@@ -69,20 +71,24 @@ const MapComponent = () => {
             },
           };
 
-          map.addSource('circle', {
-            type: 'geojson',
-            data: circleFeature,
-          });
+          if (!map.getSource('circle')) {
+            map.addSource('circle', {
+              type: 'geojson',
+              data: circleFeature,
+            });
 
-          map.addLayer({
-            id: 'circle-radius',
-            type: 'fill',
-            source: 'circle',
-            paint: {
-              'fill-color': '#007cbf',
-              'fill-opacity': 0.3,
-            },
-          });
+            map.addLayer({
+              id: 'circle-radius',
+              type: 'fill',
+              source: 'circle',
+              paint: {
+                'fill-color': '#007cbf',
+                'fill-opacity': 0.3,
+              },
+            });
+          } else {
+            map.getSource('circle').setData(circleFeature);
+          }
         },
         (error) => {
           console.error('Error fetching user location:', error);
@@ -90,9 +96,10 @@ const MapComponent = () => {
       );
     } else if (map && !isLocationOn) {
       // Remove the marker and circle when location is turned off
-      const markers = map.getLayer('circle-radius');
-      if (markers) {
+      if (map.getLayer('circle-radius')) {
         map.removeLayer('circle-radius');
+      }
+      if (map.getSource('circle')) {
         map.removeSource('circle');
       }
     }
