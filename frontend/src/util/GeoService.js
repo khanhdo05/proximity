@@ -25,7 +25,7 @@ function GeoService(userid, labelSelector, setNearbyUsers) {
             console.log(e)
         }
             // console.log("gsdgdg")
-        // console.log(`Got ${(nearbyUsers)}`)
+        console.log(`Got ${(nearbyUsers)}`)
             setNearbyUsers(nearbyUsers)//.filter(t => t[0] !== userid))
             await axios.post("http://localhost:8080/api/user/updateLoc", {"latitude" : loc.coords.latitude, "longitude": loc.coords.longitude, "timestamp" : loc.timestamp, "uid" : userid})
             // await new Promise(r => setTimeout(r, checkLocDelaySec * 1000));
@@ -34,5 +34,6 @@ function GeoService(userid, labelSelector, setNearbyUsers) {
     // useEffect(()=>{window.navigator.geolocation.watchPosition(handleLoc, ()=>{})})
     
     return <></>
+
 }
 export default GeoService;

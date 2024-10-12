@@ -89,4 +89,6 @@ router.post('/getNearbyUsers', async (req, res) => {
     //   res.send("oh no")
     // }
 });
+
+router.post()
 module.exports = router;
