@@ -10,6 +10,7 @@ logs/
 
 # Environment variables
 .env
+backend/.env
 
 # Database
 *.sqlite

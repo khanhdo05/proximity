@@ -42,11 +42,11 @@ app.use(express.json());
 connectDB().then((r) => console.log(r));
 
 // User schema and model
-const userSchema = new Schema({
-  username: { type: String, required: true, unique: true },
-});
+// const userSchema = new Schema({
+//   username: { type: String, required: true, unique: true },
+// });
 
-const User = model('User', userSchema);
+// const User = model('User', userSchema);
 
 // Use routes
 app.use('/api/user', require('./routes/userRoutes'));
