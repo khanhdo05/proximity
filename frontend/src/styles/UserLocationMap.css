@@ -16,16 +16,53 @@
   padding: 1rem;
 }
 
-.people-list h2 {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
+.people-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
 .people-list h3 {
   font-size: 1.25rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin: 0;
+}
+
+.button-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.location-toggle-button,
+.received-requests-button {
+  background-color: #4a5568;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+
+.location-toggle-button:hover,
+.received-requests-button:hover {
+  background-color: #2d3748;
+}
+
+.location-toggle-button {
+  min-width: 120px;
+}
+
+.location-toggle-button[data-active='true'] {
+  background-color: #48bb78;
+}
+
+.location-toggle-button[data-active='false'] {
+  background-color: #e53e3e;
 }
 
 .person-card {
