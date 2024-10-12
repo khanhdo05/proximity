@@ -37,9 +37,9 @@ router.post('/updateLoc', async (req, res) => {
   let timestamp = data.timestamp;
   let uid = data.userid;
   User.findByIdAndUpdate(uid, {
-    longitude: long,
-    latitude: lat,
-    lastUpdated: timestamp,
+    "location.y": long,
+    "location.x": lat,
+    "location.lastUpdated": timestamp,
   });
 });
 
@@ -65,16 +65,16 @@ router.post('/getNearbyUsers', async (req, res) => {
   //User.$where((u) => (earthRadiusM * (u.longitude - long))**2 + (earthRadiusM * (u.latitude - lat))**2  < distThresholdM &&
   //  timestamp - u.lastUpdated < 1000 * showUserDelaySec).select(`_id labels.${labelSelector}`).exec().then(res.send)
 
-  User.where('longitude')
+  User.where('location.x')
     .gt(long - distThresholdR)
     .lt(long + distThresholdR)
-    .where('latitude')
+    .where('location.y')
     .gt(lat - distThresholdR)
     .lt(lat + distThresholdR)
-    .where('lastUpdated')
+    .where('location.lastUpdated')
     .gt(timestamp - showUserDelaySec * 1000)
     .select(`_id labels.${labelSelector}`)
     .exec()
-    .then((a) => res.send());
+    .then((a) => res.send(a));
 });
 module.exports = router;
