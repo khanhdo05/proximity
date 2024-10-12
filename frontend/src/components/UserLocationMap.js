@@ -128,7 +128,7 @@ const MapComponent = () => {
   };
 
   const handleReceivedRequests = () => {
-    navigate('/requestedMeetups');
+    navigate('/receivedRequests');
   };
 
   const toggleLocation = () => {

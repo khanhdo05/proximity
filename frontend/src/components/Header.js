@@ -17,6 +17,11 @@ const Header = () => {
               Profile
             </Link>
           </li>
+          <li className="nav-item">
+            <Link to="/receivedRequests" className="nav-link">
+              Received Requests
+            </Link>
+          </li>
         </ul>
       </nav>
     </header>
