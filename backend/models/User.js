@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
     },
     location: {
-      type: { x: Number, y: Number },
+      type: { x: Number, y: Number, lastUpdated: Number},
       required: true,
       unique: true,
       trim: true,
@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema(
         [LabelTypes.CHILL]: String,
       },
     },
-    currentLabel: {
+    currentLabel: { //either "professional", "dating", or "chill"
       type: String,
       required: true,
     },
