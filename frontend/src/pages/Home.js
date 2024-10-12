@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const navigate = useNavigate();
-  window.navigator.geolocation.getCurrentPosition(console.log)
+  
   useEffect(() => {
     const currentUser = localStorage.getItem('currentUser');
     if (!currentUser) {
