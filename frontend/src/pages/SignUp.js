@@ -4,20 +4,19 @@ import axios from 'axios';
 
 function SignUp() {
   const Status = {
-    professional: "professional",
-    dating: "dating",
-    chill: "chill",
+    professional: 'professional',
+    dating: 'dating',
+    chill: 'chill',
   };
 
-  const [username, setUsername] = useState("");
-  const [error, setError] = useState("");
+  const [username, setUsername] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
-  const [professional, setProfessional] = useState("");
-  const [dating, setDating] = useState("");
-  const [chatting, setChatting] = useState("");
+  const [professional, setProfessional] = useState('');
+  const [dating, setDating] = useState('');
+  const [chatting, setChatting] = useState('');
   const [locationOn, setLocationOn] = useState(false);
   const [currentLabel, setCurrentLabel] = useState(Status.chill);
-
 
   const handleSignUp = async () => {
     try {
@@ -35,7 +34,7 @@ function SignUp() {
   };
 
   function setSelectedLabel() {
-    const selectedLabel = document.getElementById("labels").value;
+    const selectedLabel = document.getElementById('labels').value;
     setCurrentLabel(selectedLabel);
   }
 
@@ -43,13 +42,17 @@ function SignUp() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <h1 className="text-3xl font-bold mb-4">Bio</h1>
       {/* set username*/}
-      {!localStorage.getItem("currentUser") ? <input
-        type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="Enter your username"
-        className="mb-4 p-2 border border-gray-300 rounded"
-      /> : username}
+      {!localStorage.getItem('currentUser') ? (
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Enter your username"
+          className="mb-4 p-2 border border-gray-300 rounded"
+        />
+      ) : (
+        username
+      )}
 
       {/* set icon */}
 
@@ -82,7 +85,9 @@ function SignUp() {
       />
 
       {/* choose label to currently display */}
-      <h1 className="text-3xl font-bold mb-4">Choose Label to Currently Display</h1>
+      <h1 className="text-3xl font-bold mb-4">
+        Choose Label to Currently Display
+      </h1>
       <select id="labels" onChange={setSelectedLabel} default={currentLabel}>
         <option value="chatting">Chatting</option>
         <option value="professional">Professional</option>
