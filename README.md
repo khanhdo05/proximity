@@ -25,13 +25,7 @@ Proximity is a networking application that enables users to log in and discover 
 
 2. **Install dependencies for both frontend and backend:**
     ```bash
-    # For the backend
-    cd backend
-    npm install
-
-    # For the frontend
-    cd ../frontend
-    npm install
+    npm run install:all
     ```
 
 3. **Set up environment variables:**
@@ -42,16 +36,10 @@ Proximity is a networking application that enables users to log in and discover 
    
 ### Running the Application
 
-1. **Start the backend server:**
+1. **Start both backend and frontend servers:**
     ```bash
-    cd backend
     npm start
     ```
 
-2. **Start the frontend development server:**
-    ```bash
-    cd ../frontend
-    npm start
-    ```
-
-3. **Access the application:**
+2. **Access the application:**
+   Open your browser and navigate to `http://localhost:3000`
