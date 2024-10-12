@@ -4,7 +4,6 @@ import MapComponent from './UserLocationMap';
 
 function Home() {
   const navigate = useNavigate();
-  
   useEffect(() => {
     const currentUser = localStorage.getItem('currentUser');
     if (!currentUser) {

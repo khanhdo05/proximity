@@ -67,19 +67,6 @@ const MapComponent = () => {
     }
   }, [map]);
 
-  useEffect(() => {
-    // Fetch people from backend
-    const fetchPeople = async () => {
-      try {
-        const response = await axios.get("/api/people"); // Adjust the endpoint as needed
-        setPeople(response.data);
-      } catch (error) {
-        console.error("Error fetching people:", error);
-      }
-    };
-
-    fetchPeople();
-  }, []);
 
   const getCircleCoordinates = (center, radiusInMeters) => {
     const points = 64;
