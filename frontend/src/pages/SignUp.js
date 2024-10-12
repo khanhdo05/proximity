@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from '../contexts/AuthContext';
 
 function SignUp() {
   const Status = {
@@ -8,7 +9,7 @@ function SignUp() {
     dating: 'dating',
     chill: 'chill',
   };
-
+  const { user, signup } = useContext(AuthContext);
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -20,13 +21,16 @@ function SignUp() {
 
   const handleSignUp = async () => {
     try {
-      const response = await axios.post(
-        'http://localhost:8080/api/user/signup',
-        {
-          username,
-        }
-      );
-      localStorage.setItem('currentUser', response.data.username);
+      const data = {
+        username,
+        professional,
+        dating,
+        chatting,
+        locationOn,
+        currentLabel,
+      };
+      await axios.post('http://localhost:8080/api/user/signup', data);
+      signup(data);
       navigate('/home');
     } catch (error) {
       setError(error.response.data.message);
@@ -42,7 +46,7 @@ function SignUp() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <h1 className="text-3xl font-bold mb-4">Profile</h1>
       {/* set username*/}
-      {!localStorage.getItem('currentUser') ? (
+      {!user ? (
         <input
           type="text"
           value={username}
@@ -51,7 +55,7 @@ function SignUp() {
           className="mb-4 p-2 border border-gray-300 rounded"
         />
       ) : (
-        username
+        user.username
       )}
 
       {/* set icon */}
