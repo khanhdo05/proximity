@@ -1,8 +1,8 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const connectDB = require("./config/connect");
-const { Schema, model } = require("mongoose");
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const connectDB = require('./config/connect');
+const { Schema, model } = require('mongoose');
 
 const app = express();
 const port = 5000;
@@ -17,10 +17,10 @@ const userSchema = new Schema({
   username: { type: String, required: true, unique: true },
 });
 
-const User = model("User", userSchema);
+const User = model('User', userSchema);
 
 // Use routes
-app.use("/api/user", require("./routes/userRoutes"));
+app.use('/api/user', require('./routes/userRoutes'));
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);

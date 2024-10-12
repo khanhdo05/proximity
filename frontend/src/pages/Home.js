@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const currentUser = localStorage.getItem("currentUser");
+    const currentUser = localStorage.getItem('currentUser');
     if (!currentUser) {
-      navigate("/");
+      navigate('/');
     }
   }, [navigate]);
 

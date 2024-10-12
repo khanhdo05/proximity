@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function SignUp() {
-  const [username, setUsername] = useState("");
-  const [error, setError] = useState("");
+  const [username, setUsername] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSignUp = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/signup", {
+      const response = await axios.post('http://localhost:5000/signup', {
         username,
       });
-      localStorage.setItem("currentUser", response.data.username);
-      navigate("/home");
+      localStorage.setItem('currentUser', response.data.username);
+      navigate('/home');
     } catch (error) {
       setError(error.response.data.message);
     }
