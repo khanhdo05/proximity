@@ -9,9 +9,12 @@ function SignUp() {
 
   const handleSignUp = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/signup', {
-        username,
-      });
+      const response = await axios.post(
+        'http://localhost:5000/api/user/signup',
+        {
+          username,
+        }
+      );
       localStorage.setItem('currentUser', response.data.username);
       navigate('/home');
     } catch (error) {

@@ -4,4 +4,4 @@ const LabelTypes = Object.freeze({
   CHILL: 'chill',
 });
 
-export default LabelTypes;
+module.exports = LabelTypes;
