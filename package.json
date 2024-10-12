@@ -10,7 +10,8 @@
     "format": "prettier --write \"**/*.{js,jsx,json,css,scss,md}\""
   },
   "dependencies": {
-    "concurrently": "^7.0.0"
+    "concurrently": "^7.0.0",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "prettier": "^3.3.3"
