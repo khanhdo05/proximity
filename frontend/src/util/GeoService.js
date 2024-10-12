@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect } from 'react';
 
 //insert if location is on
-function GeoService(userid, username, labelSelector, labelValue, setNearbyUsers) {
+function GeoService(userid, labelSelector, setNearbyUsers) {
     //
     // userid = "670adadf129a893f730eaaa5";
     // username = "mouse"
