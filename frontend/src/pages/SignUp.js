@@ -5,6 +5,7 @@ import { AuthContext } from '../contexts/AuthContext';
 import '../styles/signup.css'; // Import the CSS file
 
 function SignUp() {
+  // TODO: Add editable fields, handle setting values better than this ugly
   const Status = {
     professional: 'professional',
     dating: 'dating',
