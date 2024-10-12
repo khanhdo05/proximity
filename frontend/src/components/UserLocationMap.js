@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '../styles/UserLocationMap.css';
@@ -7,8 +8,10 @@ mapboxgl.accessToken =
   'pk.eyJ1IjoiYWRhcnNoLXNoYXJtYTYyMTgiLCJhIjoiY2t2bHA5bDZuMDMzNjJ3cjJjYzNuNG1ieCJ9.QdNHT48FzKYo-MW9BsMUDA';
 
 const MapComponent = () => {
+  const navigate = useNavigate();
   const mapContainerRef = useRef(null);
   const [map, setMap] = useState(null);
+  const [isLocationOn, setIsLocationOn] = useState(true);
   const [nearbyPeople, setNearbyPeople] = useState([
     {
       id: 1,
@@ -48,7 +51,7 @@ const MapComponent = () => {
   }, []);
 
   useEffect(() => {
-    if (map) {
+    if (map && isLocationOn) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
@@ -85,8 +88,15 @@ const MapComponent = () => {
           console.error('Error fetching user location:', error);
         }
       );
+    } else if (map && !isLocationOn) {
+      // Remove the marker and circle when location is turned off
+      const markers = map.getLayer('circle-radius');
+      if (markers) {
+        map.removeLayer('circle-radius');
+        map.removeSource('circle');
+      }
     }
-  }, [map]);
+  }, [map, isLocationOn]);
 
   const getCircleCoordinates = (center, radiusInMeters) => {
     const points = 64;
@@ -100,7 +110,7 @@ const MapComponent = () => {
       const dy = distanceY * Math.sin(angle);
       coords.push([center[0] + dx, center[1] + dy]);
     }
-    coords.push(coords[0]); // Close the polygon loop
+    coords.push(coords[0]);
     return coords;
   };
 
@@ -108,14 +118,35 @@ const MapComponent = () => {
     console.log(
       `${person.actionType} clicked for person from ${person.affiliation}`
     );
-    // Implement the action logic here
+  };
+
+  const handleReceivedRequests = () => {
+    navigate('/requestedMeetups');
+  };
+
+  const toggleLocation = () => {
+    setIsLocationOn((prevState) => !prevState);
+    // backend logic
   };
 
   return (
     <div className="map-component">
       <div ref={mapContainerRef} className="map-container" />
       <div className="people-list">
-        <h3>Choose a person</h3>
+        <div className="people-list-header">
+          <h3>Choose a person</h3>
+          <div className="button-group">
+            <button onClick={toggleLocation} className="location-toggle-button">
+              Location: {isLocationOn ? 'On' : 'Off'}
+            </button>
+            <button
+              onClick={handleReceivedRequests}
+              className="received-requests-button"
+            >
+              Received Requests
+            </button>
+          </div>
+        </div>
         {nearbyPeople.map((person) => (
           <div key={person.id} className="person-card">
             <div className="person-info">
