@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import Modal from './Modal';
 import { AuthContext } from '../contexts/AuthContext';
 
-const Chat = () => {
+const Chat = ({ roomId }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [ws, setWs] = useState(null);
@@ -14,25 +14,44 @@ const Chat = () => {
 
     socket.onopen = () => {
       console.log('WebSocket connection established');
+
+      // Send a message to join a room when WebSocket is open
+      socket.send(
+        JSON.stringify({
+          type: 'join-room',
+          room: roomId,
+          userId: user._id, // Sending unique user ID
+        })
+      );
     };
 
     socket.onmessage = (event) => {
+      // Check if the data is a Blob (binary data)
       if (event.data instanceof Blob) {
         const reader = new FileReader();
         reader.onload = () => {
-          const messageData = JSON.parse(reader.result);
+          try {
+            const messageData = JSON.parse(reader.result);
+            setMessages((prevMessages) => [
+              ...prevMessages,
+              { text: messageData.text, sender: messageData.sender },
+            ]);
+          } catch (error) {
+            console.error('Error parsing Blob message as JSON:', error);
+          }
+        };
+        reader.readAsText(event.data);
+      } else {
+        // Handle text-based WebSocket messages
+        try {
+          const messageData = JSON.parse(event.data);
           setMessages((prevMessages) => [
             ...prevMessages,
             { text: messageData.text, sender: messageData.sender },
           ]);
-        };
-        reader.readAsText(event.data);
-      } else {
-        const messageData = JSON.parse(event.data);
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          { text: messageData.data, sender: messageData.sender },
-        ]);
+        } catch (error) {
+          console.error('Error parsing text message as JSON:', error);
+        }
       }
     };
 
@@ -42,15 +61,17 @@ const Chat = () => {
 
     return () => {
       socket.close();
-      console.log('Disconnect client');
+      console.log('Disconnected client');
     };
-  }, []);
+  }, [user._id]);
 
   const sendMessage = () => {
     if (ws && input) {
       const messageData = JSON.stringify({
+        type: 'chat-message',
         text: input,
-        sender: user._id, // or any unique user identifier
+        room: roomId, // Send message to the correct room
+        sender: user._id,
       });
       ws.send(messageData);
       setInput('');

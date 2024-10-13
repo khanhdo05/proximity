@@ -7,6 +7,12 @@ const PersonCard = ({ labelValue, personId, onAction, isInHome }) => {
   const { user } = useContext(AuthContext);
   const [isClicked, setIsClicked] = useState(false);
 
+  const generateRoomId = (userId1, userId2) => {
+    const sortedIds = [userId1, userId2].sort();
+    return `${sortedIds[0]}_${sortedIds[1]}`;
+  };
+  const roomId = generateRoomId(user._id, personId);
+
   const handleAction = () => {
     setIsClicked(true);
     onAction({
@@ -29,7 +35,7 @@ const PersonCard = ({ labelValue, personId, onAction, isInHome }) => {
           Request Meetup
         </button>
       ) : (
-        <Chat />
+        <Chat roomId={roomId} />
       )}
     </div>
   );
