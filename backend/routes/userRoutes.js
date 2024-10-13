@@ -61,7 +61,7 @@ router.post('/updateLabel', async (req, res) => {
   res.status(200).send('OK');
 });
 const earthRadiusM = 6_378_000;
-const distThresholdM = 200;
+const distThresholdM = 200000;
 const distThresholdR = distThresholdM / earthRadiusM;
 router.post('/getNearbyUsers', async (req, res) => {
   //list of (object_id, label)
