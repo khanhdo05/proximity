@@ -12,19 +12,19 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
     },
     location: {
-      type: { x: Number, y: Number, lastUpdated: Number},
+      type: { x: Number, y: Number, lastUpdated: Number },
       required: true,
-      unique: true,
       trim: true,
     },
     labels: {
       type: {
         [LabelTypes.PROFESSIONAL]: String,
         [LabelTypes.DATING]: String,
-        [LabelTypes.CHILL]: String,
+        [LabelTypes.CHATTING]: String,
       },
     },
-    currentLabel: { //either "professional", "dating", or "chill"
+    currentLabel: {
+      //either "professional", "dating", or "chatting"
       type: String,
       required: true,
     },
@@ -36,15 +36,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    activeOutboundRequests : {
+    activeOutboundRequests: {
       type: [String],
-      required: false
-    },
-    currentConnectedUserId: {
-      type: String,
       required: false,
-      trim: true,
-      unique: true,
     },
   },
   { timestamps: true }

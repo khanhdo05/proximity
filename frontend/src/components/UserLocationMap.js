@@ -1,42 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import '../styles/UserLocationMap.css';
+import GeoService from '../util/GeoService';
+import PersonCard from './PersonCard';
+import { AuthContext } from '../contexts/AuthContext';
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoiYWRhcnNoLXNoYXJtYTYyMTgiLCJhIjoiY2t2bHA5bDZuMDMzNjJ3cjJjYzNuNG1ieCJ9.QdNHT48FzKYo-MW9BsMUDA';
 
 const MapComponent = () => {
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
   const mapContainerRef = useRef(null);
   const [map, setMap] = useState(null);
   const [isLocationOn, setIsLocationOn] = useState(true);
-  const [nearbyPeople, setNearbyPeople] = useState([
-    {
-      id: 1,
-      affiliation: 'Uber',
-      interests: 'Music',
-      age: '20-25',
-      pronouns: 'he/him',
-    },
-    {
-      id: 2,
-      affiliation: 'MIT',
-      interests: 'CS and funny websites',
-      age: '25-30',
-      pronouns: 'she/her',
-    },
-    {
-      id: 3,
-      affiliation: 'Grinnell College',
-      interests: 'Philosphy and English',
-      age: '15-20',
-      pronouns: 'they/them',
-    },
-  ]);
+  const [nearbyPeople, setNearbyPeople] = useState([]);
   const radiusInMeters = 1609.34; // 1 mile in meters
-
+  const updateNearbyPeople = (newPeople) => {
+    setNearbyPeople(newPeople);
+  };
   useEffect(() => {
     const mapInstance = new mapboxgl.Map({
       container: mapContainerRef.current,
@@ -154,23 +138,24 @@ const MapComponent = () => {
             </button>
           </div>
         </div>
-        {nearbyPeople.map((person) => (
-          <div key={person.id} className="person-card">
-            <div className="person-info">
-              <h4>1 Person from {person.affiliation}</h4>
-              <p className="details">
-                {person.pronouns} • {person.age}
-              </p>
-              <p>Interested in {person.interests}</p>
-            </div>
-            <button
-              onClick={() => handleAction(person)}
-              className="action-button"
-            >
-              Request Meetup
-            </button>
-          </div>
-        ))}
+        <GeoService
+          userid={user._id}
+          labelSelector={user.currentLabel}
+          setNearbyUsers={updateNearbyPeople}
+        />
+        {!nearbyPeople ? (
+          <>BOO NO ONE HERE!</>
+        ) : (
+          nearbyPeople.map((person) => (
+            <PersonCard
+              key={person[0]}
+              labelValue={person[1]}
+              onAction={handleAction}
+              isInHome={true}
+            />
+          ))
+        )}
+        ) )
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 const LabelTypes = Object.freeze({
   PROFESSIONAL: 'professional',
   DATING: 'dating',
-  CHILL: 'chill',
+  CHATTING: 'chatting',
 });
 
 module.exports = LabelTypes;

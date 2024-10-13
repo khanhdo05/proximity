@@ -9,7 +9,7 @@ function SignUp() {
   const Status = {
     professional: 'professional',
     dating: 'dating',
-    chill: 'chill',
+    chatting: 'chatting',
   };
   const { user, signup } = useContext(AuthContext);
   const [username, setUsername] = useState('');
@@ -19,7 +19,7 @@ function SignUp() {
   const [dating, setDating] = useState('');
   const [chatting, setChatting] = useState('');
   const [locationOn, setLocationOn] = useState(false);
-  const [currentLabel, setCurrentLabel] = useState(Status.chill);
+  const [currentLabel, setCurrentLabel] = useState(Status.chatting);
 
   const handleSignUp = async () => {
     try {
@@ -31,18 +31,13 @@ function SignUp() {
         locationOn,
         currentLabel,
       };
-      await axios.post('http://localhost:8080/api/user/signup', data);
-      signup(data);
+      const b = await axios.post('http://localhost:8080/api/user/signup', data);
+      signup(b.data);
       navigate('/home');
     } catch (error) {
       setError(error.response.data.message);
     }
   };
-
-  function setSelectedLabel() {
-    const selectedLabel = document.getElementById('labels').value;
-    setCurrentLabel(selectedLabel);
-  }
 
   return (
     <div className="container">
@@ -111,7 +106,7 @@ function SignUp() {
         {!user ? (
           <select
             id="labels"
-            onChange={setSelectedLabel}
+            onChange={(e) => setCurrentLabel(e.target.value)}
             value={currentLabel}
             className="select"
           >

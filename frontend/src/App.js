@@ -16,7 +16,6 @@ function App() {
         <Route path="/receivedRequests" element={<ReceivedRequests />} />
         <Route path="/home" element={<Home />} />
         <Route path="*" element={<NotFound />} />
-        <Route path="/test" element={<GeoService />} />
       </Routes>
     </div>
   );

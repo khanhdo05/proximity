@@ -10,12 +10,12 @@ const ReceivedRequests = () => {
     const fetchReceivedRequests = async () => {
       try {
         const response = await axios.post(
-          'http://localhost:8080/api/user/receivedRequests',
+          'http://localhost:8080/api/user/getNearbyRequests',
           {
             uid: 'user-id', // Replace with actual user ID
-            longitude: 'user-longitude', // Replace with actual longitude
-            latitude: 'user-latitude', // Replace with actual latitude
-            labelSelector: 'label-selector', // Replace with actual label selector
+            longitude: 0, // Replace with actual longitude
+            latitude: 0, // Replace with actual latitude
+            labelSelector: 'professional', // Replace with actual label selector
             timestamp: Date.now(),
           }
         );
