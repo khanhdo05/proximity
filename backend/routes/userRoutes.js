@@ -124,4 +124,9 @@ router.post('/getNearbyRequests', async (req, res) => {
       res.status(200).send(b);
     });
 });
+
+router.post('/getCurrentChatUserId', async (req, res) => {
+  User.findById(req.body.uid).select('currentChatUserId').then(a=>res.status(200).send(a));
+})
+
 module.exports = router;
