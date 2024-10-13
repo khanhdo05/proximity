@@ -63,7 +63,7 @@ router.post('/updateLabel', async (req, res) => {
 const earthRadiusM = 6_378_000;
 const distThresholdM = 200;
 const distThresholdR = distThresholdM / earthRadiusM;
-const showUserDelaySec = 5;
+const showUserDelaySec = 10;
 router.post('/getNearbyUsers', async (req, res) => {
   //list of (object_id, label)
   // console.log('Got request');
