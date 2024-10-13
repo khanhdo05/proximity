@@ -46,7 +46,7 @@ const GeoService = (props) => {
   }
   useEffect(() => {
     const intervalId = setInterval(() => {
-      window.navigator.geolocation.getCurrentPosition(handleLoc);
+      window.navigator.geolocation.getCurrentPosition(handleLoc, console.log, {enableHighAccuracy:true});
     }, checkLocDelaySec * 1000);
 
     return () => clearInterval(intervalId);
