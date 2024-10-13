@@ -36,7 +36,7 @@ router.post('/signup', async (req, res) => {
 
 router.post('/updateLoc', async (req, res) => {
   let data = req.body;
-  console.log(`Got data ${data}`);
+  console.log(`Got data ${JSON.stringify(data)}`);
   let long = data.longitude;
   let lat = data.latitude;
   let timestamp = data.timestamp;
