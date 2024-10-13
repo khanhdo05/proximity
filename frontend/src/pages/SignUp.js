@@ -124,18 +124,6 @@ function SignUp() {
           </p>
         )}
 
-        {/* Location Visibility Toggle */}
-        <h2 className="label">Change Location Visibility</h2>
-        <label className="flex items-center mb-4">
-          <span className="mr-3 text-gray-600">Location is on</span>
-          <input
-            type="checkbox"
-            checked={user ? user.locationOn : locationOn}
-            onChange={() => setLocationOn(!locationOn)}
-            className="toggle"
-          />
-        </label>
-
         {/* Submit Button */}
         {!user && (
           <button
