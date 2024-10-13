@@ -16,7 +16,15 @@ const Chat = () => {
     };
 
     socket.onmessage = (event) => {
-      setMessages((prevMessages) => [...prevMessages, event.data]);
+      if (event.data instanceof Blob) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          setMessages((prevMessages) => [...prevMessages, reader.result]);
+        };
+        reader.readAsText(event.data);
+      } else {
+        setMessages((prevMessages) => [...prevMessages, event.data]);
+      }
     };
 
     socket.onerror = (error) => {
@@ -36,7 +44,6 @@ const Chat = () => {
     }
   };
 
-  // TODO: no button to open
   return (
     <div>
       <button onClick={() => setIsModalOpen(true)}>Open Chat</button>

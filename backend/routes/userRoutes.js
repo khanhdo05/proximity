@@ -145,12 +145,6 @@ router.post('/updateLocationOn', async (req, res) => {
   });
 });
 
-router.post('/getCurrentChatUserId', async (req, res) => {
-  User.findById(req.body.uid)
-    .select('currentChatUserId')
-    .then((a) => res.status(200).send(a));
-});
-
 // New route: Send a meetup request
 router.post('/sendMeetupRequest', async (req, res) => {
   const { senderId, receiverId, senderLabel } = req.body;
@@ -173,13 +167,11 @@ router.post('/sendMeetupRequest', async (req, res) => {
       $addToSet: { activeOutboundRequests: receiverId },
     });
 
-    res
-      .status(201)
-      .json({
-        success: true,
-        message: 'Meetup request sent successfully',
-        request: savedRequest,
-      });
+    res.status(201).json({
+      success: true,
+      message: 'Meetup request sent successfully',
+      request: savedRequest,
+    });
   } catch (error) {
     console.error('Error sending meetup request:', error);
     res

@@ -3,11 +3,12 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const connectDB = require('./config/connect');
 const { Schema, model } = require('mongoose');
-const { WebSocketServer } = require('ws');
+const { WebSocketServer, WebSocket } = require('ws');
 
 const app = express();
 const port = 8080;
 const wss = new WebSocketServer({ port: 8081 });
+let clients = [];
 
 wss.on('connection', (ws) => {
   console.log('New client connected');
@@ -16,7 +17,19 @@ wss.on('connection', (ws) => {
     console.log('received: %s', message);
   });
 
-  ws.send('something');
+  clients.push(ws);
+
+  ws.on('error', console.error);
+
+  ws.on('message', (message) => {
+    console.log('received: %s', message);
+    // Broadcast the message to all connected clients
+    clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(message);
+      }
+    });
+  });
 
   ws.on('close', () => {
     console.log('Client disconnected');
