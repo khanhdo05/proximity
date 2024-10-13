@@ -44,12 +44,12 @@ router.post('/updateLoc', async (req, res) => {
   await User.findByIdAndUpdate(uid, {
     location: { x: lat, y: long, lastUpdated: timestamp },
   }).exec();
-  await User.findByIdAndUpdate(uid, {
-    'location.y': long,
-    'location.x': lat,
-    'location.lastUpdated': timestamp,
-  }).exec();
-  res.status(200).send();
+  // await User.findByIdAndUpdate(uid, {
+  //   'location.y': long,
+  //   'location.x': lat,
+  //   'location.lastUpdated': timestamp,
+  // }).exec();
+  res.status(200).send("OK");
   console.log(`just updated, x is ${lat} for uid ${uid}`);
 });
 
@@ -58,7 +58,7 @@ router.post('/updateLabel', async (req, res) => {
   let labelSelector = data.labelSelector; //selector
   let uid = data.userid;
   await User.findByIdAndUpdate(uid, { currentLabel: labelSelector }).exec();
-  res.status(200).send();
+  res.status(200).send("OK");
 });
 const earthRadiusM = 6_378_000;
 const distThresholdM = 200;
@@ -76,7 +76,7 @@ router.post('/getNearbyUsers', async (req, res) => {
   //User.$where((u) => (earthRadiusM * (u.longitude - long))**2 + (earthRadiusM * (u.latitude - lat))**2  < distThresholdM &&
   //  timestamp - u.lastUpdated < 1000 * showUserDelaySec).select(`_id labels.${labelSelector}`).exec().then(res.send)
 
-  User.find({})
+  try {User.find({})
     .where('location.x')
     .gt(lat - distThresholdR)
     .lt(lat + distThresholdR)
@@ -92,7 +92,10 @@ router.post('/getNearbyUsers', async (req, res) => {
       let b = a.map((o) => [o._id, o.labels[labelSelector]]);
       res.status(200).send(b);
     });
-
+  }
+  catch(e) {
+    res.status(500).send()
+  }
   // try {User.find({}).then(a => res.send(a)); }
   // catch(error) {
   //   res.send("oh no")
