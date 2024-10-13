@@ -1,16 +1,16 @@
 import React, { useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
+import Chat from './Chat';
 
-/**
- * PersonCard component
- * @param person - The User object of the person on the card
- * @param onAction - The function to call when the action button 1 is clicked
- * @param isInHome - Is the card is rendered in the homepage
- * @returns {Element}
- * @constructor
- */
-const PersonCard = ({ labelValue, onAction, isInHome }) => {
+const PersonCard = ({ labelValue, personId, onAction, isInHome }) => {
   const { user } = useContext(AuthContext);
+
+  const handleAction = () => {
+    onAction({
+      personId: personId,
+      actionType: isInHome ? 'Request Meetup' : 'Accept Request',
+    });
+  };
 
   return (
     <div className="person-card">
@@ -19,9 +19,13 @@ const PersonCard = ({ labelValue, onAction, isInHome }) => {
           This person would like to chat about {user.currentLabel} {labelValue}
         </h4>
       </div>
-      <button onClick={() => onAction()} className="action-button">
-        {isInHome ? 'Request Meetup' : 'Chat Now!'}
-      </button>
+      {isInHome ? (
+        <button onClick={handleAction} className="action-button">
+          Request Meetup
+        </button>
+      ) : (
+        <Chat />
+      )}
     </div>
   );
 };

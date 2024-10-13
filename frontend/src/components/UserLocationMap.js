@@ -19,9 +19,11 @@ const MapComponent = () => {
   const [isLocationOn, setIsLocationOn] = useState(true);
   const [nearbyPeople, setNearbyPeople] = useState([]);
   const radiusInMeters = 1609.34; // 1 mile in meters
+
   const updateNearbyPeople = (newPeople) => {
     setNearbyPeople(newPeople);
   };
+
   useEffect(() => {
     const mapInstance = new mapboxgl.Map({
       container: mapContainerRef.current,
@@ -80,7 +82,6 @@ const MapComponent = () => {
         }
       );
     } else if (map && !isLocationOn) {
-      // Remove the marker and circle when location is turned off
       if (map.getLayer('circle-radius')) {
         map.removeLayer('circle-radius');
       }
@@ -106,10 +107,27 @@ const MapComponent = () => {
     return coords;
   };
 
-  const handleAction = (person) => {
-    console.log(
-      `${person.actionType} clicked for person from ${person.affiliation}`
-    );
+  const handleAction = async ({ personId, actionType }) => {
+    if (actionType === 'Request Meetup') {
+      try {
+        const response = await axios.post(
+          'http://localhost:8080/api/user/sendMeetupRequest',
+          {
+            senderId: user._id,
+            receiverId: personId,
+            senderLabel: user.currentLabel,
+          }
+        );
+        if (response.data.success) {
+          alert('Meetup request sent successfully!');
+        } else {
+          alert('Failed to send meetup request. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error sending meetup request:', error);
+        alert('An error occurred while sending the meetup request.');
+      }
+    }
   };
 
   const handleReceivedRequests = () => {
@@ -118,13 +136,14 @@ const MapComponent = () => {
 
   const toggleLocation = async () => {
     setIsLocationOn((prevState) => !prevState);
-    const response = await axios.post(
-      'http://localhost:8080/api/user/updateLocationOn',
-      {
+    try {
+      await axios.post('http://localhost:8080/api/user/updateLocationOn', {
         uid: user._id,
         isLocationOn: !isLocationOn,
-      }
-    );
+      });
+    } catch (error) {
+      console.error('Error updating location status:', error);
+    }
   };
 
   return (
@@ -157,6 +176,7 @@ const MapComponent = () => {
             <PersonCard
               key={person[0]}
               labelValue={person[1]}
+              personId={person[0]}
               onAction={handleAction}
               isInHome={true}
             />

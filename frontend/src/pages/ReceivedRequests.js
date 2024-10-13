@@ -1,25 +1,23 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import PersonCard from '../components/PersonCard';
+import { AuthContext } from '../contexts/AuthContext';
+import Chat from '../components/Chat';
 
 const ReceivedRequests = () => {
-  const [people, setPeople] = useState([]);
+  const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchReceivedRequests = async () => {
       try {
-        const response = await axios.post(
-          'http://localhost:8080/api/user/getNearbyRequests',
-          {
-            uid: 'user-id', // Replace with actual user ID
-            longitude: 0, // Replace with actual longitude
-            latitude: 0, // Replace with actual latitude
-            labelSelector: 'professional', // Replace with actual label selector
-            timestamp: Date.now(),
-          }
+        console.log('Fetching received requests for user:', user._id);
+        const response = await axios.get(
+          `http://localhost:8080/api/user/getReceivedRequests/${user._id}`
         );
-        setPeople(response.data);
+        console.log('Received requests:', response.data);
+        setRequests(response.data);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching received requests:', error);
@@ -27,23 +25,42 @@ const ReceivedRequests = () => {
       }
     };
 
-    fetchReceivedRequests().then(() => {
-      console.log('Received requests fetched');
-    });
-  }, []);
+    if (user) {
+      fetchReceivedRequests();
+    }
+  }, [user]);
+
+  const handleAction = async (request) => {
+    try {
+      await axios.post('http://localhost:8080/api/user/acceptMeetupRequest', {
+        requestId: request._id,
+        userId: user._id,
+      });
+      // Remove the accepted request from the list
+      setRequests(requests.filter((req) => req._id !== request._id));
+    } catch (error) {
+      console.error('Error accepting meetup request:', error);
+    }
+  };
 
   if (loading) {
-    return <div>Loading users...</div>;
+    return <div>Loading requests...</div>;
   }
 
   return (
     <div className="received-requests">
-      <h3>Received Requests</h3>
-      {people.length === 0 ? (
-        <p>Wop wop no one wants to chat. Send requests to people!</p>
+      <h3>Received Meetup Requests</h3>
+      {requests.length === 0 ? (
+        <p>No meetup requests received yet.</p>
       ) : (
-        people.map((person) => (
-          <PersonCard person={person} onAction={() => {}} isInHome={false} />
+        requests.map((request) => (
+          <PersonCard
+            key={request._id}
+            labelValue={request.senderLabel}
+            personId={request.senderId._id}
+            onAction={() => handleAction(request)}
+            isInHome={false}
+          />
         ))
       )}
     </div>
