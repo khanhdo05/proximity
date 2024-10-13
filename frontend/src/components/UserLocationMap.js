@@ -143,7 +143,7 @@ const MapComponent = () => {
           labelSelector={user.currentLabel}
           setNearbyUsers={updateNearbyPeople}
         />
-        {!nearbyPeople ? (
+        {nearbyPeople.length === 0 ? (
           <>BOO NO ONE HERE!</>
         ) : (
           nearbyPeople.map((person) => (

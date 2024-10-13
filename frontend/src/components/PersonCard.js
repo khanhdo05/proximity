@@ -15,8 +15,9 @@ const PersonCard = ({ labelValue, onAction, isInHome }) => {
   return (
     <div className="person-card">
       <div className="person-info">
-        <h4>Interest: {user.currentLabel}</h4>
-        <p>{labelValue}</p>
+        <h4>
+          This person would like to chat about {user.currentLabel} {labelValue}
+        </h4>
       </div>
       <button onClick={() => onAction()} className="action-button">
         {isInHome ? 'Request Meetup' : 'Chat Now!'}
