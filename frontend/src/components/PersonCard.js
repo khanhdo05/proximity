@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import Chat from './Chat';
+import '../styles/personCard.css';
 
 const PersonCard = ({ labelValue, personId, onAction, isInHome }) => {
   const { user } = useContext(AuthContext);
@@ -17,9 +18,7 @@ const PersonCard = ({ labelValue, personId, onAction, isInHome }) => {
   return (
     <div className="person-card">
       <div className="person-info">
-        <h4>
-          This person would like to chat about {user.currentLabel} {labelValue}
-        </h4>
+        <div>{labelValue}</div>
       </div>
       {isInHome ? (
         <button

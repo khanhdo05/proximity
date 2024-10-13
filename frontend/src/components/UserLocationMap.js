@@ -7,6 +7,7 @@ import GeoService from '../util/GeoService';
 import PersonCard from './PersonCard';
 import { AuthContext } from '../contexts/AuthContext';
 import axios from 'axios';
+import Header from './Header';
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoiYWRhcnNoLXNoYXJtYTYyMTgiLCJhIjoiY2t2bHA5bDZuMDMzNjJ3cjJjYzNuNG1ieCJ9.QdNHT48FzKYo-MW9BsMUDA';
@@ -147,43 +148,51 @@ const MapComponent = () => {
   };
 
   return (
-    <div className="map-component">
-      <div ref={mapContainerRef} className="map-container" />
-      <div className="people-list">
-        <div className="people-list-header">
-          <h3>People around you:</h3>
-          <div className="button-group">
-            <button onClick={toggleLocation} className="location-toggle-button">
-              Location: {isLocationOn ? 'On' : 'Off'}
-            </button>
-            <button
-              onClick={handleReceivedRequests}
-              className="received-requests-button"
-            >
-              Received Requests
-            </button>
+    <>
+      <Header />
+      <div className="map-component">
+        <div ref={mapContainerRef} className="map-container" />
+        <div className="people-list">
+          <div className="people-list-header">
+            <h3>People around you:</h3>
+            <div className="button-group">
+              <button
+                onClick={toggleLocation}
+                className="location-toggle-button"
+              >
+                Location: {isLocationOn ? 'On' : 'Off'}
+              </button>
+              <button
+                onClick={handleReceivedRequests}
+                className="received-requests-button"
+              >
+                Received Requests
+              </button>
+            </div>
           </div>
+          <GeoService
+            userid={user._id}
+            labelSelector={user.currentLabel}
+            setNearbyUsers={updateNearbyPeople}
+          />
+          {nearbyPeople.length === 0 ? (
+            <>
+              We will let you know when you have interesting people around you.
+            </>
+          ) : (
+            nearbyPeople.map((person) => (
+              <PersonCard
+                key={person[0]}
+                labelValue={person[1]}
+                personId={person[0]}
+                onAction={handleAction}
+                isInHome={true}
+              />
+            ))
+          )}
         </div>
-        <GeoService
-          userid={user._id}
-          labelSelector={user.currentLabel}
-          setNearbyUsers={updateNearbyPeople}
-        />
-        {nearbyPeople.length === 0 ? (
-          <>BOO NO ONE HERE!</>
-        ) : (
-          nearbyPeople.map((person) => (
-            <PersonCard
-              key={person[0]}
-              labelValue={person[1]}
-              personId={person[0]}
-              onAction={handleAction}
-              isInHome={true}
-            />
-          ))
-        )}
       </div>
-    </div>
+    </>
   );
 };
 

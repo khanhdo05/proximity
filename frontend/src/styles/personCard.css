@@ -1,0 +1,25 @@
+.person-card {
+  position: relative;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.action-button {
+  background-color: #4a5567; /* Button color */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.action-button:hover {
+  background-color: #2d3748; /* Ensure background color stays the same on hover */
+}
+
+.action-button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
