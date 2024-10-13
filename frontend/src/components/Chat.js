@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Modal from './Modal';
+import { AuthContext } from '../contexts/AuthContext';
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [ws, setWs] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const { user } = useContext(AuthContext);
   useEffect(() => {
     const socket = new WebSocket('ws://localhost:8081');
     setWs(socket);
@@ -19,11 +20,19 @@ const Chat = () => {
       if (event.data instanceof Blob) {
         const reader = new FileReader();
         reader.onload = () => {
-          setMessages((prevMessages) => [...prevMessages, reader.result]);
+          const messageData = JSON.parse(reader.result);
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            { text: messageData.text, sender: messageData.sender },
+          ]);
         };
         reader.readAsText(event.data);
       } else {
-        setMessages((prevMessages) => [...prevMessages, event.data]);
+        const messageData = JSON.parse(event.data);
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { text: messageData.data, sender: messageData.sender },
+        ]);
       }
     };
 
@@ -39,7 +48,11 @@ const Chat = () => {
 
   const sendMessage = () => {
     if (ws && input) {
-      ws.send(input);
+      const messageData = JSON.stringify({
+        text: input,
+        sender: user._id, // or any unique user identifier
+      });
+      ws.send(messageData);
       setInput('');
     }
   };
@@ -48,10 +61,13 @@ const Chat = () => {
     <div>
       <button onClick={() => setIsModalOpen(true)}>Open Chat</button>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div>
-          <div>
+        <div className="chat-container">
+          <div className="messages">
             {messages.map((message, index) => (
-              <div key={index}>{message}</div>
+              <div key={index} className={`message ${message.sender}`}>
+                {message.text}
+                {message.sender === user._id ? ' (You)' : ''}
+              </div>
             ))}
           </div>
           <input
