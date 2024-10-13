@@ -109,7 +109,7 @@ router.post('/getNearbyRequests', async (req, res) => {
   let labelSelector = data.labelSelector;
   let timestamp = data.timestamp;
   console.log('got data ' + JSON.stringify(data));
-  User.find({ uid: {$in : "activeOutboundRequests"} })
+  User.find({ activeOutboundRequests: { $in: [uid] } })
     .where('location.x')
     .gt(lat - distThresholdR)
     .lt(lat + distThresholdR)
