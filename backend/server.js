@@ -12,10 +12,6 @@ let clients = [];
 
 wss.on('connection', (ws) => {
   console.log('New client connected');
-  ws.on('error', console.error);
-  ws.on('message', (message) => {
-    console.log('received: %s', message);
-  });
 
   clients.push(ws);
 
@@ -33,6 +29,7 @@ wss.on('connection', (ws) => {
 
   ws.on('close', () => {
     console.log('Client disconnected');
+    clients = clients.filter((client) => client !== ws);
   });
 });
 
