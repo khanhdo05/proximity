@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 const GeoService = (props) => {
   const { userid, labelSelector, setNearbyUsers } = props;
 
-  const checkLocDelaySec = 3;
+  const checkLocDelaySec = 1;
   window.navigator.geolocation.getCurrentPosition(console.log);
   useEffect(() => {
     console.log(`userid ${JSON.stringify(userid)}`);
