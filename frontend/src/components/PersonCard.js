@@ -1,11 +1,13 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
 import Chat from './Chat';
 
 const PersonCard = ({ labelValue, personId, onAction, isInHome }) => {
   const { user } = useContext(AuthContext);
+  const [isClicked, setIsClicked] = useState(false);
 
   const handleAction = () => {
+    setIsClicked(true);
     onAction({
       personId: personId,
       actionType: isInHome ? 'Request Meetup' : 'Accept Request',
@@ -20,7 +22,11 @@ const PersonCard = ({ labelValue, personId, onAction, isInHome }) => {
         </h4>
       </div>
       {isInHome ? (
-        <button onClick={handleAction} className="action-button">
+        <button
+          onClick={handleAction}
+          className="action-button"
+          disabled={isClicked}
+        >
           Request Meetup
         </button>
       ) : (
