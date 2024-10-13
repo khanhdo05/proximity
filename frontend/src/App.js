@@ -8,14 +8,6 @@ import Header from './components/Header';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
-  const navigate = useNavigate();
-  useEffect(() => {
-    const currentUser = localStorage.getItem('currentUser');
-    if (!currentUser) {
-      navigate('/');
-    }
-  }, [navigate]);
-
   return (
     <div className="App">
       <Header />

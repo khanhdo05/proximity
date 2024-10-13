@@ -6,7 +6,7 @@ const GeoService = (props) => {
   const { userid, labelSelector, setNearbyUsers } = props;
 
   const checkLocDelaySec = 2;
-//   window.navigator.geolocation.getCurrentPosition(handleLoc);
+  //   window.navigator.geolocation.getCurrentPosition(handleLoc);
   useEffect(() => {
     console.log(`userid ${JSON.stringify(userid)}`);
     axios
@@ -34,8 +34,8 @@ const GeoService = (props) => {
       console.log(e);
     }
     console.log(`Got ${nearbyUsers}`);
-
-    setNearbyUsers(nearbyUsers.filter((t) => t[0] !== userid));
+    if (nearbyUsers) setNearbyUsers(nearbyUsers.filter((t) => t[0] !== userid));
+    // setNearbyUsers(nearbyUsers.filter((t) => t[0] !== userid));
     console.log(`Sending data uid ${userid}`);
     await axios.post('http://localhost:8080/api/user/updateLoc', {
       latitude: loc.coords.latitude,

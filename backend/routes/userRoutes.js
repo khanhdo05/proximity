@@ -49,7 +49,7 @@ router.post('/updateLoc', async (req, res) => {
   //   'location.x': lat,
   //   'location.lastUpdated': timestamp,
   // }).exec();
-  res.status(200).send("OK");
+  res.status(200).send('OK');
   console.log(`just updated, x is ${lat} for uid ${uid}`);
 });
 
@@ -58,12 +58,11 @@ router.post('/updateLabel', async (req, res) => {
   let labelSelector = data.labelSelector; //selector
   let uid = data.userid;
   await User.findByIdAndUpdate(uid, { currentLabel: labelSelector }).exec();
-  res.status(200).send("OK");
+  res.status(200).send('OK');
 });
 const earthRadiusM = 6_378_000;
 const distThresholdM = 200;
 const distThresholdR = distThresholdM / earthRadiusM;
-const showUserDelaySec = 10;
 router.post('/getNearbyUsers', async (req, res) => {
   //list of (object_id, label)
   // console.log('Got request');
@@ -76,25 +75,25 @@ router.post('/getNearbyUsers', async (req, res) => {
   //User.$where((u) => (earthRadiusM * (u.longitude - long))**2 + (earthRadiusM * (u.latitude - lat))**2  < distThresholdM &&
   //  timestamp - u.lastUpdated < 1000 * showUserDelaySec).select(`_id labels.${labelSelector}`).exec().then(res.send)
 
-  try {User.find({})
-    .where('location.x')
-    .gt(lat - distThresholdR)
-    .lt(lat + distThresholdR)
-    .where('location.y')
-    .gt(long - distThresholdR)
-    .lt(long + distThresholdR)
-    .where('location.lastUpdated')
-    .gt(timestamp - showUserDelaySec * 1000)
-    .where('currentLabel')
-    .equals(labelSelector)
-    .select(`_id labels.${labelSelector}`)
-    .then((a) => {
-      let b = a.map((o) => [o._id, o.labels[labelSelector]]);
-      res.status(200).send(b);
-    });
-  }
-  catch(e) {
-    res.status(500).send()
+  try {
+    User.find({})
+      .where('location.x')
+      .gt(lat - distThresholdR)
+      .lt(lat + distThresholdR)
+      .where('location.y')
+      .gt(long - distThresholdR)
+      .lt(long + distThresholdR)
+      .where('isLocationOn')
+      .equals(true)
+      .where('currentLabel')
+      .equals(labelSelector)
+      .select(`_id labels.${labelSelector}`)
+      .then((a) => {
+        let b = a.map((o) => [o._id, o.labels[labelSelector]]);
+        res.status(200).send(b);
+      });
+  } catch (e) {
+    res.status(500).send();
   }
   // try {User.find({}).then(a => res.send(a)); }
   // catch(error) {
@@ -132,13 +131,16 @@ router.post('/updateLocationOn', async (req, res) => {
   let data = req.body;
   let uid = data.uid;
   let locationOn = data.isLocationOn;
-  console.log("location on:", locationOn);
-  User.findByIdAndUpdate(uid, {isLocationOn: locationOn}).then((user) => {res.status(200).send(user)});
+  console.log('location on:', locationOn);
+  User.findByIdAndUpdate(uid, { isLocationOn: locationOn }).then((user) => {
+    res.status(200).send(user);
+  });
 });
 
-
 router.post('/getCurrentChatUserId', async (req, res) => {
-  User.findById(req.body.uid).select('currentChatUserId').then(a=>res.status(200).send(a));
-})
+  User.findById(req.body.uid)
+    .select('currentChatUserId')
+    .then((a) => res.status(200).send(a));
+});
 
 module.exports = router;

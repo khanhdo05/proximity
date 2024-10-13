@@ -121,7 +121,7 @@ const MapComponent = () => {
     const response = await axios.post(
       'http://localhost:8080/api/user/updateLocationOn',
       {
-        uid: user.userid,
+        uid: user._id,
         isLocationOn: !isLocationOn,
       }
     );
