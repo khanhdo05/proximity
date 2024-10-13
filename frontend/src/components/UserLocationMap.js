@@ -6,6 +6,7 @@ import '../styles/UserLocationMap.css';
 import GeoService from '../util/GeoService';
 import PersonCard from './PersonCard';
 import { AuthContext } from '../contexts/AuthContext';
+import axios from 'axios';
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoiYWRhcnNoLXNoYXJtYTYyMTgiLCJhIjoiY2t2bHA5bDZuMDMzNjJ3cjJjYzNuNG1ieCJ9.QdNHT48FzKYo-MW9BsMUDA';
@@ -115,9 +116,15 @@ const MapComponent = () => {
     navigate('/receivedRequests');
   };
 
-  const toggleLocation = () => {
+  const toggleLocation = async () => {
     setIsLocationOn((prevState) => !prevState);
-    // backend logic
+    const response = await axios.post(
+      'http://localhost:8080/api/user/updateLocationOn',
+      {
+        uid: user.userid,
+        isLocationOn: !isLocationOn,
+      }
+    );
   };
 
   return (
