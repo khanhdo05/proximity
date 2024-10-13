@@ -70,7 +70,9 @@ function SignUp() {
             className="input"
           />
         ) : (
-          <p className="mb-4 text-center text-gray-600">{user.chatting}</p>
+          <p className="mb-4 text-center text-gray-600">
+            {user.labels.chatting}
+          </p>
         )}
 
         {/* Choose Professional Label */}
@@ -84,7 +86,9 @@ function SignUp() {
             className="input"
           />
         ) : (
-          <p className="mb-4 text-center text-gray-600">{user.professional}</p>
+          <p className="mb-4 text-center text-gray-600">
+            {user.labels.professional}
+          </p>
         )}
 
         {/* Choose Dating Label */}
@@ -98,7 +102,7 @@ function SignUp() {
             className="input"
           />
         ) : (
-          <p className="mb-4 text-center text-gray-600">{user.dating}</p>
+          <p className="mb-4 text-center text-gray-600">{user.labels.dating}</p>
         )}
 
         {/* Choose Label to Currently Display */}
@@ -115,7 +119,9 @@ function SignUp() {
             <option value="dating">Dating</option>
           </select>
         ) : (
-          <p className="mb-4 text-center text-gray-600">{user.currentLabel}</p>
+          <p className="mb-4 text-center text-gray-600">
+            {user.labels.currentLabel}
+          </p>
         )}
 
         {/* Location Visibility Toggle */}

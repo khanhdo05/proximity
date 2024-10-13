@@ -125,7 +125,7 @@ const MapComponent = () => {
       <div ref={mapContainerRef} className="map-container" />
       <div className="people-list">
         <div className="people-list-header">
-          <h3>Choose a person</h3>
+          <h3>People around you:</h3>
           <div className="button-group">
             <button onClick={toggleLocation} className="location-toggle-button">
               Location: {isLocationOn ? 'On' : 'Off'}
@@ -155,7 +155,6 @@ const MapComponent = () => {
             />
           ))
         )}
-        ) )
       </div>
     </div>
   );
