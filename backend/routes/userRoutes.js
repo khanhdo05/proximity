@@ -17,7 +17,7 @@ router.post('/signup', async (req, res) => {
         chatting: chatting,
       },
       currentLabel: currentLabel,
-      isLocationOn: false,
+      isLocationOn: true,
     });
     console.log('saving user');
     await newUser.save();
@@ -124,6 +124,15 @@ router.post('/getNearbyRequests', async (req, res) => {
       res.status(200).send(b);
     });
 });
+
+router.post('/updateLocationOn', async (req, res) => {
+  let data = req.body;
+  let uid = data.uid;
+  let locationOn = data.isLocationOn;
+  console.log("location on:", locationOn);
+  User.findByIdAndUpdate(uid, {isLocationOn: locationOn}).then((user) => {res.status(200).send(user)});
+});
+
 
 router.post('/getCurrentChatUserId', async (req, res) => {
   User.findById(req.body.uid).select('currentChatUserId').then(a=>res.status(200).send(a));

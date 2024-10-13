@@ -119,9 +119,7 @@ function SignUp() {
             <option value="dating">Dating</option>
           </select>
         ) : (
-          <p className="mb-4 text-center text-gray-600">
-            {user.labels.currentLabel}
-          </p>
+          <p className="mb-4 text-center text-gray-600">{user.currentLabel}</p>
         )}
 
         {/* Submit Button */}
