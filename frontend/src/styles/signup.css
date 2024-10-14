@@ -109,3 +109,7 @@ html {
     font-size: 1.75rem;
   }
 }
+
+.received-requests {
+  margin: 20px;
+}

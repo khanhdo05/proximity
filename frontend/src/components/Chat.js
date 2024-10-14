@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Modal from './Modal';
 import { AuthContext } from '../contexts/AuthContext';
+import '../styles/Chat.css';
 
 const Chat = ({ roomId }) => {
   const [messages, setMessages] = useState([]);
@@ -8,6 +9,7 @@ const Chat = ({ roomId }) => {
   const [ws, setWs] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useContext(AuthContext);
+
   useEffect(() => {
     const socket = new WebSocket('ws://localhost:8081');
     setWs(socket);
@@ -15,18 +17,16 @@ const Chat = ({ roomId }) => {
     socket.onopen = () => {
       console.log('WebSocket connection established');
 
-      // Send a message to join a room when WebSocket is open
       socket.send(
         JSON.stringify({
           type: 'join-room',
           room: roomId,
-          userId: user._id, // Sending unique user ID
+          userId: user._id,
         })
       );
     };
 
     socket.onmessage = (event) => {
-      // Check if the data is a Blob (binary data)
       if (event.data instanceof Blob) {
         const reader = new FileReader();
         reader.onload = () => {
@@ -42,7 +42,6 @@ const Chat = ({ roomId }) => {
         };
         reader.readAsText(event.data);
       } else {
-        // Handle text-based WebSocket messages
         try {
           const messageData = JSON.parse(event.data);
           setMessages((prevMessages) => [
@@ -70,7 +69,7 @@ const Chat = ({ roomId }) => {
       const messageData = JSON.stringify({
         type: 'chat-message',
         text: input,
-        room: roomId, // Send message to the correct room
+        room: roomId,
         sender: user._id,
       });
       ws.send(messageData);
@@ -80,24 +79,39 @@ const Chat = ({ roomId }) => {
 
   return (
     <div>
-      <button onClick={() => setIsModalOpen(true)}>Open Chat</button>
+      <button className="open-chat" onClick={() => setIsModalOpen(true)}>
+        Open Chat
+      </button>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <div className="chat-container">
+          <div className="chat-header">
+            <h2>Chat Room </h2>
+          </div>
           <div className="messages">
             {messages.map((message, index) => (
-              <div key={index} className={`message ${message.sender}`}>
+              <div
+                key={index}
+                className={`message-bubble ${
+                  message.sender === user._id
+                    ? 'message-sent'
+                    : 'message-received'
+                }`}
+              >
                 {message.text}
-                {message.sender === user._id ? ' (You)' : ''}
               </div>
             ))}
           </div>
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type a message"
-          />
-          <button onClick={sendMessage}>Send</button>
+          <div className="chat-input">
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Type a message"
+            />
+            <button onClick={sendMessage} className="send-button">
+              <i className="fas fa-paper-plane"></i>
+            </button>
+          </div>
         </div>
       </Modal>
     </div>

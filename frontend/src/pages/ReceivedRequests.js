@@ -3,6 +3,8 @@ import axios from 'axios';
 import PersonCard from '../components/PersonCard';
 import { AuthContext } from '../contexts/AuthContext';
 import Chat from '../components/Chat';
+import Header from '../components/Header';
+import '../styles/signup.css';
 
 const ReceivedRequests = () => {
   const [requests, setRequests] = useState([]);
@@ -48,22 +50,25 @@ const ReceivedRequests = () => {
   }
 
   return (
-    <div className="received-requests">
-      <h3>Received Meetup Requests</h3>
-      {requests.length === 0 ? (
-        <p>No meetup requests received yet.</p>
-      ) : (
-        requests.map((request) => (
-          <PersonCard
-            key={request._id}
-            labelValue={request.senderLabel}
-            personId={request.senderId._id}
-            onAction={() => handleAction(request)}
-            isInHome={false}
-          />
-        ))
-      )}
-    </div>
+    <>
+      <Header />
+      <div className="received-requests">
+        <h3>Received Meetup Requests</h3>
+        {requests.length === 0 ? (
+          <p>No meetup requests received yet.</p>
+        ) : (
+          requests.map((request) => (
+            <PersonCard
+              key={request._id}
+              labelValue={request.senderLabel}
+              personId={request.senderId._id}
+              onAction={() => handleAction(request)}
+              isInHome={false}
+            />
+          ))
+        )}
+      </div>
+    </>
   );
 };
 
