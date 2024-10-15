@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import PersonCard from '../components/PersonCard';
 import { AuthContext } from '../contexts/AuthContext';
-import Chat from '../components/Chat';
 import Header from '../components/Header';
 import '../styles/signup.css';
 
