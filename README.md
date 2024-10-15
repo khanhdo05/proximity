@@ -39,9 +39,17 @@ Proximity is a networking application that enables users to log in and discover 
 
 3. **Set up environment variables:**
    Create a `.env` file in the `backend` directory and add the following:
-   ```plaintext
+   ```dotenv
    MONGO_URI=your_mongodb_connection_string
    ```
+   
+   Create a `.env` file in the `frontend` directory and add the following:
+   ```dotenv
+   REACT_APP_MAPBOX_ACCESS_TOKEN=your_mapbox_access_token
+   ```
+   
+   Any other environment variables can be added to the `.env` file as needed.
+   If in frontend, must prefix the variable with `REACT_APP_` to make it available in the React app.
 
 ### Running the Application
 

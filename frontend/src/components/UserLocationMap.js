@@ -9,8 +9,12 @@ import { AuthContext } from '../contexts/AuthContext';
 import axios from 'axios';
 import Header from './Header';
 
+<<<<<<< Updated upstream
 mapboxgl.accessToken =
   'pk.eyJ1IjoiYWRhcnNoLXNoYXJtYTYyMTgiLCJhIjoiY2t2bHA5bDZuMDMzNjJ3cjJjYzNuNG1ieCJ9.QdNHT48FzKYo-MW9BsMUDA';
+=======
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
+>>>>>>> Stashed changes
 
 const MapComponent = () => {
   const { user } = useContext(AuthContext);
