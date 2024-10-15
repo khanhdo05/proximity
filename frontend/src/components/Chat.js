@@ -62,7 +62,7 @@ const Chat = ({ roomId }) => {
       socket.close();
       console.log('Disconnected client');
     };
-  }, [user._id]);
+  }, [user._id, roomId]);
 
   const sendMessage = () => {
     if (ws && input) {
